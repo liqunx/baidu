@@ -1,0 +1,30 @@
+{
+    "name": "liqunx/baidu",
+    "description": "baidu SDK via composer",
+    "keywords": ["baidu", "ai","composer", "sdk"],
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "liqunx",
+            "email": "1037861925@qq.com"
+        }
+    ],
+    "require": {
+        "php": ">=7.0",
+        "ext-fileinfo": "*",
+        "ext-openssl": "*",
+        "pimple/pimple": "^3.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "Liqunx\\Baidu\\": "src/"
+        },
+        "classmap": [
+            "src/sdk/aip-php-sdk-2.2.3/"
+        ]
+    },
+    "extra": {
+
+    },
+    "minimum-stability": "dev"
+}
