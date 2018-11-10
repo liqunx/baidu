@@ -1,9 +1,9 @@
 <?php
 
 /*
- * This file is part of the overtrue/wechat.
+ * This file is part of the liqunx/laravel-baidu.
  *
- * (c) overtrue <i@overtrue.me>
+ * (c) liqunx <i@liqunx.com>
  *
  * This source file is subject to the MIT license that is bundled
  * with this source code in the file LICENSE.
@@ -49,13 +49,15 @@ class Factory
      * Convert a value to studly caps case.
      *
      * @param string $name
+     *
      * @return string
      */
-    private static function studly($name='aip') :string
+    private static function studly($name = 'aip'): string
     {
-        if ($name === 'aip') {
+        if ('aip' === $name) {
             $name = 'ai';
         }
+
         return ucwords($name);
     }
 }
