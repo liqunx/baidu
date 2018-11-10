@@ -1,8 +1,16 @@
 <?php
 
+/*
+ * This file is part of the liqunx/laravel-baidu.
+ *
+ * (c) liqunx <i@liqunx.com>
+ *
+ * This source file is subject to the MIT license that is bundled
+ * with this source code in the file LICENSE.
+ */
+
 namespace Liqunx\Baidu\Ai\Ocr;
 
-use Mockery\Exception;
 use Pimple\Container;
 
 class Client
@@ -16,41 +24,42 @@ class Client
         $this->ocr = new \AipOcr($config['app_id'], $config['api_key'], $config['secret']);
     }
 
-    protected function getConfig() :array
+    protected function getConfig(): array
     {
         return $this->app->getConfig();
     }
 
-    public function __call($name, $arguments) :array
+    public function __call($name, $arguments): array
     {
-        if (method_exists($this->ocr, $name)) {
-            $result = call_user_func_array([$this->ocr, $name], $arguments);
-            if ($content = $this->shouldTranslate($result)) {
-                $result = $this->translateIntoEnglish($content, $name);
-            }
-            return $result;
+        if (!method_exists($this->ocr, $name)) {
+            throw new \Exception('method not found', 500);
         }
-        throw new Exception('method not found');
+        $result = call_user_func_array([$this->ocr, $name], $arguments);
+        $content = json_encode($result);
+        if ($this->shouldTranslate($content)) {
+            $result = $this->translateIntoEnglish($content, $name);
+        }
+
+        return $result;
     }
 
-    private function shouldTranslate(array $result)
+    private function shouldTranslate(array $result): bool
     {
         $content = json_encode($result);
-        if (preg_match('/\\\\u([0-9a-f]{4})/i', $content)) {
-            return $content;
-        }
-        return false;
+
+        return preg_match('/\\\\u([0-9a-f]{4})/i', $content);
     }
 
-    private function translateIntoEnglish($content, $name = 'idcard') :array
+    private function translateIntoEnglish($content, $name = 'idcard'): array
     {
         $search = $this->getSearch($name);
         $replace = $this->getReplace($name);
         $content = str_replace($search, $replace, $content);
+
         return json_decode($content, true);
     }
 
-    private function getSearch($name) :array
+    private function getSearch($name): array
     {
         $search = [
             'idcard' => [
@@ -71,19 +80,20 @@ class Client
                 '\\u6709\\u6548\\u671f', //有效期
                 '\\u8bc1\\u4ef6\\u7f16\\u53f7', // 证件编号
                 '\\u793e\\u4f1a\\u4fe1\\u7528\\u4ee3\\u7801', // 社会信用代码
-            ]
+            ],
         ];
         if (array_key_exists($name, $search)) {
             return $search[$name];
         }
+
         return [];
     }
 
-    private function getReplace($name) :array
+    private function getReplace($name): array
     {
         $replace = [
             'idcard' => [
-                'address','id', 'birth_day', 'name', 'gender', 'nation', 'issue', 'organization', 'expiration',
+                'address', 'id', 'birth_day', 'name', 'gender', 'nation', 'issue', 'organization', 'expiration',
             ],
             'businessLicense' => [
                 'company', 'corporation ', 'address', 'expiration', 'number', 'code',
@@ -92,6 +102,7 @@ class Client
         if (array_key_exists($name, $replace)) {
             return $replace[$name];
         }
+
         return [];
     }
 }

@@ -11,6 +11,8 @@
 
 namespace Liqunx\Baidu;
 
+use Liqunx\Baidu\Kernel\ServiceContainer;
+
 /**
  * Class Factory.
  *
@@ -24,7 +26,7 @@ class Factory
      *
      * @return \Liqunx\Baidu\Kernel\ServiceContainer
      */
-    public static function make($name, array $config)
+    public static function make($name, array $config): ServiceContainer
     {
         $namespace = self::studly($name);
         $application = "\\Liqunx\\Baidu\\{$namespace}\\Application";
@@ -57,7 +59,8 @@ class Factory
         if ('aip' === $name) {
             $name = 'ai';
         }
+        $name = ucwords(str_replace(['-', '_'], ' ', $name));
 
-        return ucwords($name);
+        return str_replace(' ', '', $name);
     }
 }
