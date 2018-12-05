@@ -43,10 +43,8 @@ class Client
         return $result;
     }
 
-    private function shouldTranslate(array $result): bool
+    private function shouldTranslate(array $content): bool
     {
-        $content = json_encode($result);
-
         return preg_match('/\\\\u([0-9a-f]{4})/i', $content);
     }
 
