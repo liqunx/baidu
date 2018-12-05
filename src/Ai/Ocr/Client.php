@@ -29,7 +29,7 @@ class Client
         return $this->app->getConfig();
     }
 
-    public function __call($name, $arguments): array
+    public function __call(string $name, $arguments): array
     {
         if (!method_exists($this->ocr, $name)) {
             throw new \Exception('method not found', 500);
@@ -43,12 +43,12 @@ class Client
         return $result;
     }
 
-    private function shouldTranslate(array $content): bool
+    private function shouldTranslate(string $content): bool
     {
         return preg_match('/\\\\u([0-9a-f]{4})/i', $content);
     }
 
-    private function translateIntoEnglish($content, $name = 'idcard'): array
+    private function translateIntoEnglish(string $content, string $name = 'idcard'): array
     {
         $search = $this->getSearch($name);
         $replace = $this->getReplace($name);
@@ -57,7 +57,7 @@ class Client
         return json_decode($content, true);
     }
 
-    private function getSearch($name): array
+    private function getSearch(string $name): array
     {
         $search = [
             'idcard' => [
@@ -87,7 +87,7 @@ class Client
         return [];
     }
 
-    private function getReplace($name): array
+    private function getReplace(string $name): array
     {
         $replace = [
             'idcard' => [
