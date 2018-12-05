@@ -28,3 +28,5 @@
         $idCardSide = 'front'; // 正面
         $result = $ocr->idcard($image, $idCardSide);
         ```
+        
+- others
