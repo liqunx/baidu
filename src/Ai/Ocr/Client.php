@@ -61,7 +61,7 @@ class Client
     {
         $search = [
             'idcard' => [
-                '\\u4f4f\u5740', //地址
+                '\\u4f4f\u5740', //住址
                 '\\u516c\\u6c11\\u8eab\\u4efd\\u53f7\\u7801', // 公民身份证号
                 '\\u51fa\\u751f', //出生
                 '\\u59d3\\u540d', //姓名
@@ -72,12 +72,16 @@ class Client
                 '\\u5931\\u6548\\u65e5\\u671f', //失效日期
             ],
             'businessLicense' => [
-                '\\u5355\\u4f4d\\u540d\\u79f0', //单位名称
-                '\\u6cd5\\u4eba', //法人
-                '\\u4f4f\u5740', //地址
-                '\\u6709\\u6548\\u671f', //有效期
+                '\\u5355\\u4f4d\\u540d\\u79f0', // 单位名称
+                '\\u6cd5\\u4eba', // 法人
+                '\\u5730\u5740', // 地址
+                '\\u6709\\u6548\\u671f', // 有效期
                 '\\u8bc1\\u4ef6\\u7f16\\u53f7', // 证件编号
                 '\\u793e\\u4f1a\\u4fe1\\u7528\\u4ee3\\u7801', // 社会信用代码
+                '\\u6ce8\\u518c\\u8d44\\u672c', // 注册资本
+                '\\u7ec4\\u6210\\u5f62\\u5f0f', // 组成形式
+                '\\u6210\\u7acb\\u65e5\\u671f', // 成立日期
+                '\\u7c7b\\u578b', // 注册类型
             ],
         ];
         if (array_key_exists($name, $search)) {
@@ -95,6 +99,7 @@ class Client
             ],
             'businessLicense' => [
                 'company', 'corporation ', 'address', 'expiration', 'number', 'code',
+                'registered_capital', 'composing_form', 'registered_date', 'registered_type'
             ],
         ];
         if (array_key_exists($name, $replace)) {
